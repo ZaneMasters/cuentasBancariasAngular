@@ -1,0 +1,103 @@
+<div >
+    <h2>Movimientos</h2>
+    <button class="add-button" (click)="openForm()">Nuevo Movimiento</button>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>Número de Cuenta</th>
+          <th>Fecha</th>
+          <th>Tipo de Movimiento</th>
+          <th>Valor</th>
+          <th>Saldo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let movimiento of movimientos">
+          <td>{{ movimiento.cuenta.numeroCuenta }}</td>
+          <td>{{ movimiento.fecha | date: 'short' }}</td>
+          <td>{{ movimiento.tipoMovimiento }}</td>
+          <td>{{ movimiento.valor | currency }}</td>
+          <td>{{ movimiento.saldo | currency }}</td>
+          <td>
+            <button class="edit-button" (click)="editMovimiento(movimiento)">Editar</button>
+            <button class="delete-button" (click)="eliminarMovimiento(movimiento.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Popup Formulario -->
+    <div class="popup" *ngIf="showPopup">
+      <div class="popup-content">
+        <h3>{{ editing ? 'Editar Movimiento' : 'Crear Nuevo Movimiento' }}</h3>
+        <form (ngSubmit)="onSubmit()">
+          
+            <label for="numerocuenta">Número de Cuenta</label>
+            <select id="cuenta" [(ngModel)]="selectedMovimiento.cuentaId" name="cuenta" required>
+                <option value="" disabled>Seleccione una cuenta</option>
+                <option *ngFor="let cuenta of cuentas" [ngValue]="cuenta.id">{{ cuenta.numeroCuenta }}</option>
+              </select>
+        
+     
+  
+          <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input
+              type="datetime-local"
+              id="fecha"
+              [(ngModel)]="selectedMovimiento.fecha"
+              name="fecha"
+              required
+            />
+          </div>
+  
+          <div class="form-group">
+            <label for="tipo_movimiento">Tipo de Movimiento</label>
+            <select
+              id="tipo_movimiento"
+              [(ngModel)]="selectedMovimiento.tipoMovimiento"
+              name="tipo_movimiento"
+              required
+            >
+              <option value="" disabled selected>Seleccione un tipo</option>
+              <option value="DEBITO">DEBITO</option>
+              <option value="CREDITO">CREDITO</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="valor">Valor</label>
+            <input
+              type="number"
+              id="valor"
+              [(ngModel)]="selectedMovimiento.valor"
+              name="valor"
+              required
+            />
+          </div>
+  
+          <div class="form-group">
+            <label for="saldo">Saldo</label>
+            <input
+              type="number"
+              id="saldo"
+              [(ngModel)]="selectedMovimiento.saldo"
+              name="saldo"
+              required
+              readonly
+            />
+          </div>
+  
+          <div class="form-actions">
+            <button type="submit" class="save-button">Guardar</button>
+            <button type="button" class="cancel-button" (click)="closeForm()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

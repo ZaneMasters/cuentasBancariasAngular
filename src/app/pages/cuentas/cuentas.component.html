@@ -1,0 +1,84 @@
+<div >
+    <h2>Gestión de Cuentas</h2>
+    <button (click)="openForm()">Nueva Cuenta</button>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Numero de Cuenta</th>
+          <th>Tipo de Cuenta</th>
+          <th>Saldo Inicial</th>
+          <th>Estado</th>
+          <th>Cliente</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cuenta of cuentas">
+          <td>{{ cuenta.numeroCuenta }}</td>
+          <td>{{ cuenta.tipoCuenta }}</td>
+          <td>{{ cuenta.saldoInicial| currency }}</td>
+          <td>{{ cuenta.estado ? 'Activo' : 'Inactivo' }}</td>
+          <td>{{ cuenta.cliente.nombre }}</td>
+          <td>
+            <button class="actions" (click)="editCuenta(cuenta)">Editar</button>
+            <button (click)="eliminarCuenta(cuenta.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+<div *ngIf="showPopup" class="popup">
+    <div class="popup-content">
+      <h3>{{ editing ? 'Editar Cuenta' : 'Nueva Cuenta' }}</h3>
+      <form (ngSubmit)="onSubmit()" class="popup-form">
+        <!-- Tipo de Cuenta -->
+        <label for="tipocuenta">Tipo de Cuenta</label>
+        <select id="tipocuenta" [(ngModel)]="selectedCuenta.tipoCuenta" name="tipocuenta" required>
+          <option value="" disabled>Seleccione tipo de cuenta</option>
+          <option value="Ahorros">Ahorros</option>
+          <option value="Corriente">Corriente</option>
+        </select>
+  
+        <label for="cliente">Cliente</label>
+        <select id="cliente" [(ngModel)]="selectedCuenta.clienteId" name="cliente" required>
+          <option value="" disabled>Seleccione un cliente</option>
+          <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">{{ cliente.nombre }}</option>
+        </select>
+  
+        <label for="saldo_inicial">Saldo Inicial</label>
+        <input
+          type="number"
+          id="saldo_inicial"
+          [(ngModel)]="selectedCuenta.saldoInicial"
+          name="saldo_inicial"
+          required
+          min="0"
+        />
+  
+        <label for="estado">Estado</label>
+        <select id="estado" [(ngModel)]="selectedCuenta.estado" name="estado" required>
+          <option [value]="true">Activo</option>
+          <option [value]="false">Inactivo</option>
+        </select>
+  
+        <label for="numerocuenta">Número de Cuenta</label>
+        <input
+          type="text"
+          id="numerocuenta"
+          [(ngModel)]="selectedCuenta.numeroCuenta"
+          name="numerocuenta"
+          [readonly]="editing"
+          required
+        />
+  
+        <div class="form-buttons">
+          <button type="submit">{{ editing ? 'Actualizar' : 'Crear' }}</button>
+          <button type="button" (click)="closeForm()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  </div>
+  

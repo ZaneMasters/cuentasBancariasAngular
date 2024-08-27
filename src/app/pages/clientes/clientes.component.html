@@ -1,0 +1,75 @@
+<h2>Gestión de Clientes</h2>
+
+<button (click)="openForm()">Agregar Cliente</button>
+
+<div *ngIf="clientes.length === 0">
+  <p>No hay datos o registros disponibles.</p>
+</div>
+
+<table *ngIf="clientes.length > 0">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Direccion</th>
+      <th>Identificación</th>
+      <th>Telefono</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cliente of clientes">
+      <td>{{ cliente.nombre }}</td>
+      <td>{{ cliente.direccion }}</td>
+      <td>{{ cliente.identificacion }}</td>
+      <td>{{ cliente.telefono }}</td>
+      <td>{{ cliente.estado }}</td>
+      <td>
+        <div >
+        <button class="actions" (click)="editCliente(cliente)">Editar</button>
+        <button (click)="eliminarCliente(cliente.id)">Eliminar</button>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="popup" *ngIf="showPopup">
+  <div class="popup-content">
+    <h3>{{ editing ? 'Editar Cliente' : 'Agregar Cliente' }}</h3>
+    <form (ngSubmit)="onSubmit()">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" [(ngModel)]="selectedCliente.nombre" name="nombre" required>
+
+      <label for="genero">Género:</label>
+      <select id="genero" [(ngModel)]="selectedCliente.genero" name="genero" required>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+      </select>
+
+      <label for="edad">Edad:</label>
+      <input type="number" id="edad" [(ngModel)]="selectedCliente.edad" name="edad" required>
+
+      <label for="identificacion">Identificación:</label>
+      <input type="text" id="identificacion" [(ngModel)]="selectedCliente.identificacion" name="identificacion" required>
+
+      <label for="direccion">Dirección:</label>
+      <input type="text" id="direccion" [(ngModel)]="selectedCliente.direccion" name="direccion" required>
+
+      <label for="telefono">Teléfono:</label>
+      <input type="text" id="telefono" [(ngModel)]="selectedCliente.telefono" name="telefono" required>
+
+      <label for="clienteid">Cliente ID:</label>
+      <input type="text" id="clienteid" [(ngModel)]="selectedCliente.clienteid" name="clienteid" required>
+
+      <label for="contraseña">Contraseña:</label>
+      <input type="password" id="contraseña" [(ngModel)]="selectedCliente.contrasena" name="contraseña" required>
+
+      <label for="estado">Estado:</label>
+      <input type="checkbox" id="estado" [(ngModel)]="selectedCliente.estado" name="estado">
+
+      <button type="submit">{{ editing ? 'Guardar Cambios' : 'Agregar Cliente' }}</button>
+      <button type="button" (click)="closeForm()">Cancelar</button>
+    </form>
+  </div>
+</div>
